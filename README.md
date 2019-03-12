@@ -1,2 +1,2 @@
 # TreinamentoNode
-Meus arquivos do curso do TreinamentoNode.org
+Meus arquivos do curso TreinamentoNode.org
