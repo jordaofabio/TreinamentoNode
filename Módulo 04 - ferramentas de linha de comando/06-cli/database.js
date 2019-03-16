@@ -39,6 +39,33 @@ class Database {
         const dadosFilstrados = dados ? dados.filter(item => id ? item.id === id : true) : dados;
         return dadosFilstrados;
     }
+    
+    async deletar(id) {
+        let lista = await this.obterAquivos();
+
+        const indice = lista.findIndex(item => item.id === parseInt(id));
+        lista.splice(parseInt(indice), 1);
+
+        return await this.escreverArquivos(lista);
+    }
+
+    async atualizar(idOrginal, novosDados) {
+        const listar = await this.listar(parseInt(idOrginal))
+
+        if (listar.length === 0) {
+            throw Error('O herói informado não existe')
+        }
+        const registroAtualizado = {
+            ...novosDados,
+            id: idOrginal
+        }
+
+        await this.deletar(idOrginal);
+        await this.cadastrar(registroAtualizado);
+
+        return await this.listar(idOrginal);
+
+    }
 }
 
 module.exports = new Database();

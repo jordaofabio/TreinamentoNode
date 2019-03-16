@@ -17,7 +17,7 @@ const DEFAULT_ITEM_ATUALIZAR = {
 describe('Suite de manipulação de Heróis', function() {
 
     before(async () => {
-        const [lista] = await database.listar(null);
+        const [lista] = await database.obterAquivos();
         if(!lista) await database.cadastrar(DEFAULT_ITEM_CADASTRAR);
     });
 
@@ -28,6 +28,12 @@ describe('Suite de manipulação de Heróis', function() {
         deepEqual(resultado, expected);
     })
 
+    it('Deve deletar o herói de id = 1', async () => {
+        await database.deletar(1);
+        const resultado = await database.listar(1).length;
+        ok(!resultado);
+    })
+
     it('Deve cadastrar um heroi, usando arquivos', async () => {
         const expeted = DEFAULT_ITEM_CADASTRAR;
         const resultado = await database.cadastrar(DEFAULT_ITEM_CADASTRAR);
@@ -36,24 +42,22 @@ describe('Suite de manipulação de Heróis', function() {
         deepEqual(actual, expeted);
     });
 
-    it.only('Deve atualiza um heroi, pelo id', async () => {
-        
-
+    it('Deve atualizar um heroi, pelo id', async () => {
         const novoDado = {
             "nome": "Batman",
             "poder": "Dinheiro"
         };
 
         const expected = { 
-            ...DEFAULT_ITEM_ATUALIZAR,
+            id: DEFAULT_ITEM_ATUALIZAR.id,
             ...novoDado
         };
 
-        console.log('expected', expected);
-
-        const resultado = await database.atualizar(DEFAULT_ITEM_ATUALIZAR.id,novoDado);
+        const [resultado] = await database.atualizar(DEFAULT_ITEM_ATUALIZAR.id,novoDado);
 
         deepEqual(resultado, expected);
     })
+
+    
 
 })
