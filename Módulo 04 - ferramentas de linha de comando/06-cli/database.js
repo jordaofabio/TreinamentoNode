@@ -1,5 +1,6 @@
 const { readFile, writeFile } = require('fs');
 const { promisify } = require('util');
+const Heroi = require('./heroi');
 
 const readFileAsync = promisify(readFile);
 const writeFileAsync = promisify(writeFile);
@@ -19,15 +20,20 @@ class Database {
     }
 
     async escreverArquivos(dados) {
-        await writeFileAsync(this.NOME_ARQUIVO, JSON.stringify(dados));
+        const dadosOrganizados = dados.sort(function(a, b) {
+            return a.id - b.id;
+        });
+        await writeFileAsync(this.NOME_ARQUIVO, JSON.stringify(dadosOrganizados));
         return true;
     }
 
     async cadastrar(heroi) {
         const dados = await this.obterAquivos();
         const id = heroi.id <= 2 ? heroi.id : Date.now();
-        const heroiComId = { id, ...heroi };
+        const heroiComId = { ...heroi, id };
         const dadosFinal = [ ...dados, heroiComId ];
+        console.log('dadosFinal', dadosFinal)
+        
         const resultado = await this.escreverArquivos(dadosFinal);
 
         return resultado;
@@ -40,7 +46,7 @@ class Database {
         return dadosFilstrados;
     }
     
-    async deletar(id) {
+    async remover(id) {
         let lista = await this.obterAquivos();
 
         const indice = lista.findIndex(item => item.id === parseInt(id));
@@ -49,19 +55,20 @@ class Database {
         return await this.escreverArquivos(lista);
     }
 
-    async atualizar(idOrginal, novosDados) {
-        const listar = await this.listar(parseInt(idOrginal))
 
-        if (listar.length === 0) {
+    async atualizar(idOrginal, novosDados) {
+        const original = await this.listar(parseInt(idOrginal))
+
+        if (original.length === 0) {
             throw Error('O herói informado não existe')
         }
         const registroAtualizado = {
-            ...novosDados,
-            id: idOrginal
+            ...original,
+            ...novosDados
         }
 
-        await this.deletar(idOrginal);
-        await this.cadastrar(registroAtualizado);
+        await this.remover(idOrginal);
+        await this.cadastrar(new Heroi(registroAtualizado));
 
         return await this.listar(idOrginal);
 
