@@ -10,7 +10,7 @@ docker run
     -e POSTGRES_DB=heroes 
     -p 5432:5432 
     -d 
-    posgres
+    postgres
 
 
     docker ps
