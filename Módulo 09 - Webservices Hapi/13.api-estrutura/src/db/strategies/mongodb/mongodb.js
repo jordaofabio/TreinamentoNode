@@ -22,7 +22,7 @@ class MongoDb extends ICrud {
     }
 
     static connect() {
-        Mongoose.connect('mongodb://fabio:12345@192.168.99.100:27017/herois', { useNewUrlParser: true }, function (error) {
+        Mongoose.connect('mongodb://fabio:12345@localhost:27017/herois', { useNewUrlParser: true }, function (error) {
             if (!error) return;
             console.log('Falha na conexão!', error);
         });

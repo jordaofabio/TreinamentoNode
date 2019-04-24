@@ -55,8 +55,6 @@ describe('Postgre Strategy', function() {
         }
         const [result] = await context.update(itemAtualizar.id, novoItem);
         const [itemAtualizado] = await context.read({id : itemAtualizar.id});
-        console.log('novoItem.nome', novoItem.nome)
-        console.log('itemAtualizado.nome', itemAtualizado.nome)
         assert.deepEqual(result, 1);
         
         assert.deepEqual(itemAtualizado.nome, novoItem.nome);

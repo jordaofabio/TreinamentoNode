@@ -14,7 +14,7 @@ class Postgres extends ICrud {
             'fabio',
             '12345',
             {
-                host: '192.168.99.100',
+                host: 'localhost',
                 dialect: 'postgres',
                 // case sensitive
                 quoteIdentifiers: false,

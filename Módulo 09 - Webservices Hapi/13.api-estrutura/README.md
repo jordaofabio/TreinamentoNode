@@ -43,3 +43,5 @@ docker exec -it mongodb \
     --eval "db.getSiblingDB('heroes').createUser({user:'fabio',pwd:'12345',roles: [{role: 'readWrite', db: 'heroes'}]})"
 
 docker exec -it mongodb mongo --host localhost -u admin -p 12345 --authenticationDatabase admin --eval "db.getSiblingDB('herois').createUser({user: 'fabio', pwd: '12345', roles: [{role: 'readWrite', db: 'herois'}]})"
+
+sudo docker start 0cadfa1a2ad9 4810f3191c90 a39b5be11581 7de23971aff3
