@@ -99,10 +99,6 @@ describe.only('Suite de teste da API Heroes', function() {
     it('Atualizar PATCH - /herois/:id', async() => {
         const _id = MOCK_ID;
 
-        const expected = {
-            poder: 'Velocidade'
-        };
-
         const dadoAtualizar = {
             poder: 'Super Velocidade'
         };
@@ -110,7 +106,7 @@ describe.only('Suite de teste da API Heroes', function() {
         const result = await app.inject({
             method: 'PATCH',
             url: `/herois/${_id}`,
-            payload: JSON.stringify(expected)
+            payload: JSON.stringify(dadoAtualizar)
         });
 
         const statusCode = result.statusCode;
